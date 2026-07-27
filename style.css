@@ -91,8 +91,8 @@ section:has(#age-input) .sec-label{text-align:center}
 .age-ul{position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--acc);transition:width 200ms var(--eob)}
 .age-wrap:focus-within .age-ul{width:100%}
 .age-unit{display:block;font-size:.75rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--soft);margin-top:8px;text-align:center}
-/* Dotted rule */
-.dot-rule{color:var(--line);margin:20px 0;width:100%;overflow:hidden}
+/* Dotted rule (CSS-only, no SVG needed) */
+.dot-rule{margin:20px 0;width:100%;height:6px;background:repeating-linear-gradient(to right,var(--line) 0,var(--line) 2px,transparent 2px,transparent 9px);border-radius:2px}
 /* Result */
 .result-sec{min-height:150px;display:flex;align-items:center;justify-content:center}
 .r-empty{text-align:center;padding:20px 0}

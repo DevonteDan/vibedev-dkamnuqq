@@ -2,54 +2,39 @@
 <html lang="en"><head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Pet Age Translator — How old is your pet, really?</title>
-<meta name="description" content="Convert your pet's age to human years. Dog, cat, rabbit, hamster, parrot — no data saved."/>
+<meta name="description" content="Convert your pet's age to human years. Dog, cat, rabbit, hamster, parrot."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500&family=Newsreader:ital,wght@1,400&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="style.css"/>
 </head><body>
 <noscript><p style="font-family:sans-serif;text-align:center;padding:40px">Requires JavaScript.</p></noscript>
 <main class="page"><div class="widget" role="main" aria-label="Pet Age Translator">
-
 <header class="w-header"><span class="dot" aria-hidden="true"></span><span class="eyebrow">Pet Age Translator</span></header>
-
 <section aria-labelledby="ls"><p class="sec-label" id="ls">Choose your pet</p>
 <div class="species-row" role="group" aria-label="Select species">
 
 <div class="sp-item"><button class="sp-btn" data-sp="dog" aria-label="Select Dog" aria-pressed="true" id="btn-dog">
 <svg class="sp-icon" viewBox="0 0 44 44" fill="none" aria-hidden="true">
-<!-- Head -->
 <ellipse cx="22" cy="27" rx="12" ry="11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-<!-- Left floppy ear (hanging down alongside head) -->
-<path d="M10 22 C6 18 5 10 8 6 C10 3 14 4 14 9 C14 14 12 19 10 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<!-- Right floppy ear -->
-<path d="M34 22 C38 18 39 10 36 6 C34 3 30 4 30 9 C30 14 32 19 34 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<!-- Eyes -->
+<path d="M10 22C6 18 5 10 8 6C10 3 14 4 14 9C14 14 12 19 10 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M34 22C38 18 39 10 36 6C34 3 30 4 30 9C30 14 32 19 34 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <circle cx="17.5" cy="25" r="1.8" fill="currentColor"/>
 <circle cx="26.5" cy="25" r="1.8" fill="currentColor"/>
-<!-- Nose/snout area -->
 <ellipse cx="22" cy="32" rx="4" ry="2.5" stroke="currentColor" stroke-width="1.6"/>
-<!-- Mouth -->
-<path d="M19 32 Q22 35.5 25 32" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+<path d="M19 32Q22 35.5 25 32" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
 </svg></button>
 <span class="sp-name" aria-hidden="true">Dog</span><div class="sp-line" aria-hidden="true"></div></div>
 
 <div class="sp-item"><button class="sp-btn" data-sp="cat" aria-label="Select Cat" aria-pressed="false" id="btn-cat">
 <svg class="sp-icon" viewBox="0 0 44 44" fill="none" aria-hidden="true">
-<!-- Head (slightly angular/triangular) -->
-<path d="M10 32 C10 24 12 17 22 15 C32 17 34 24 34 32 C34 37 28.5 40 22 40 C15.5 40 10 37 10 32Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<!-- Left pointed ear -->
-<path d="M11 26 L7 12 L18 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<!-- Right pointed ear -->
-<path d="M33 26 L37 12 L26 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<!-- Eyes (almond shape) -->
+<path d="M10 32C10 24 12 17 22 15C32 17 34 24 34 32C34 37 28.5 40 22 40C15.5 40 10 37 10 32Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M11 26L7 12L18 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M33 26L37 12L26 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 <ellipse cx="17" cy="28" rx="2" ry="1.5" fill="currentColor"/>
 <ellipse cx="27" cy="28" rx="2" ry="1.5" fill="currentColor"/>
-<!-- Nose -->
 <circle cx="22" cy="33" r="1.3" fill="currentColor"/>
-<!-- Whiskers left -->
 <line x1="4" y1="31" x2="16" y2="32" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
 <line x1="4" y1="34.5" x2="16" y2="33.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-<!-- Whiskers right -->
 <line x1="40" y1="31" x2="28" y2="32" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
 <line x1="40" y1="34.5" x2="28" y2="33.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
 </svg></button>
@@ -57,51 +42,36 @@
 
 <div class="sp-item"><button class="sp-btn" data-sp="rabbit" aria-label="Select Rabbit" aria-pressed="false" id="btn-rabbit">
 <svg class="sp-icon" viewBox="0 0 44 44" fill="none" aria-hidden="true">
-<!-- Head (round) -->
 <ellipse cx="22" cy="30" rx="11" ry="10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-<!-- Left tall ear -->
-<path d="M15 23 C13 17 13 7 16 3 C17 1.5 19.5 2 19.5 4.5 C19.5 9 18 18 17 23" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-<!-- Right tall ear -->
-<path d="M29 23 C31 17 31 7 28 3 C27 1.5 24.5 2 24.5 4.5 C24.5 9 26 18 27 23" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-<!-- Eyes -->
+<path d="M15 23C13 17 13 7 16 3C17 1.5 19.5 2 19.5 4.5C19.5 9 18 18 17 23" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M29 23C31 17 31 7 28 3C27 1.5 24.5 2 24.5 4.5C24.5 9 26 18 27 23" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
 <circle cx="17.5" cy="28" r="1.8" fill="currentColor"/>
 <circle cx="26.5" cy="28" r="1.8" fill="currentColor"/>
-<!-- Nose (bunny round nose) -->
 <circle cx="22" cy="33" r="2" fill="currentColor"/>
-<!-- Mouth -->
-<path d="M19.5 33 Q22 36.5 24.5 33" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+<path d="M19.5 33Q22 36.5 24.5 33" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
 </svg></button>
 <span class="sp-name" aria-hidden="true">Rabbit</span><div class="sp-line" aria-hidden="true"></div></div>
 
 <div class="sp-item"><button class="sp-btn" data-sp="hamster" aria-label="Select Hamster" aria-pressed="false" id="btn-hamster">
 <svg class="sp-icon" viewBox="0 0 44 44" fill="none" aria-hidden="true">
-<!-- Very round head -->
 <circle cx="22" cy="24" r="14" stroke="currentColor" stroke-width="2"/>
-<!-- Puffy cheeks bulging out -->
-<path d="M8 24 C5 20 5.5 13 9 11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-<path d="M36 24 C39 20 38.5 13 35 11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-<!-- Tiny round ears (barely peeking) -->
-<path d="M15 11 C14 8 16 7 18 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-<path d="M29 11 C30 8 28 7 26 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-<!-- Big eyes (hamster characteristic) -->
+<path d="M8 24C5 20 5.5 13 9 11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+<path d="M36 24C39 20 38.5 13 35 11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+<path d="M15 11C14 8 16 7 18 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+<path d="M29 11C30 8 28 7 26 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
 <circle cx="16" cy="21" r="2.5" fill="currentColor"/>
 <circle cx="28" cy="21" r="2.5" fill="currentColor"/>
-<!-- Tiny nose -->
 <circle cx="22" cy="27" r="1.5" fill="currentColor"/>
-<!-- Mouth -->
-<path d="M19.5 27 Q22 30.5 24.5 27" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+<path d="M19.5 27Q22 30.5 24.5 27" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
 </svg></button>
 <span class="sp-name" aria-hidden="true">Hamster</span><div class="sp-line" aria-hidden="true"></div></div>
 
 <div class="sp-item"><button class="sp-btn" data-sp="parrot" aria-label="Select Parrot" aria-pressed="false" id="btn-parrot">
 <svg class="sp-icon" viewBox="0 0 44 44" fill="none" aria-hidden="true">
-<!-- Round head -->
 <circle cx="22" cy="26" r="13" stroke="currentColor" stroke-width="2"/>
-<!-- Crest feathers on top -->
-<path d="M17 14 C15 9 16 5 19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-<path d="M21 13 C20 8 21.5 5 24 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-<path d="M25 15 C25 10 27 7 29 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-<!-- Large distinctive eye with ring -->
+<path d="M17 14C15 9 16 5 19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+<path d="M21 13C20 8 21.5 5 24 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+<path d="M25 15C25 10 27 7 29 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
 <circle cx="27" cy="23" r="4" stroke="currentColor" stroke-width="1.8"/>
 <circle cx="27" cy="23" r="1.8" fill="currentColor"/>
 <path d="M17 27C15 25 14.5 22 16 21C17.5 20 19 21.5 18.5 24" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
@@ -110,9 +80,7 @@
 <span class="sp-name" aria-hidden="true">Parrot</span><div class="sp-line" aria-hidden="true"></div></div>
 
 </div></section>
-
 <div class="sep" aria-hidden="true"></div>
-
 <section aria-labelledby="la">
 <label class="sec-label" for="age-input" id="la">How old is your pet?</label>
 <div class="age-row">
@@ -122,9 +90,7 @@
 </div>
 <span class="age-unit" id="age-unit" aria-hidden="true">years old</span>
 </section>
-
-<div class="dot-rule" aria-hidden="true"><svg width="100%" height="6" viewBox="0 0 380 6" preserveAspectRatio="none"><circle cx="4" cy="3" r="1.5" fill="currentColor"/><circle cx="14" cy="3" r="1" fill="currentColor"/><circle cx="22" cy="3" r="1.8" fill="currentColor"/><circle cx="32" cy="3" r="1.2" fill="currentColor"/><circle cx="42" cy="3" r="1" fill="currentColor"/><circle cx="51" cy="3" r="1.6" fill="currentColor"/><circle cx="61" cy="3" r="1.1" fill="currentColor"/><circle cx="71" cy="3" r="1.9" fill="currentColor"/><circle cx="80" cy="3" r="1" fill="currentColor"/><circle cx="90" cy="3" r="1.4" fill="currentColor"/><circle cx="100" cy="3" r="1.7" fill="currentColor"/><circle cx="110" cy="3" r="1" fill="currentColor"/><circle cx="119" cy="3" r="1.3" fill="currentColor"/><circle cx="129" cy="3" r="1.8" fill="currentColor"/><circle cx="139" cy="3" r="1" fill="currentColor"/><circle cx="149" cy="3" r="1.5" fill="currentColor"/><circle cx="159" cy="3" r="1.1" fill="currentColor"/><circle cx="169" cy="3" r="1.9" fill="currentColor"/><circle cx="179" cy="3" r="1.2" fill="currentColor"/><circle cx="189" cy="3" r="1" fill="currentColor"/><circle cx="199" cy="3" r="1.6" fill="currentColor"/><circle cx="209" cy="3" r="1.3" fill="currentColor"/><circle cx="219" cy="3" r="1" fill="currentColor"/><circle cx="229" cy="3" r="1.8" fill="currentColor"/><circle cx="239" cy="3" r="1.1" fill="currentColor"/><circle cx="249" cy="3" r="1.5" fill="currentColor"/><circle cx="259" cy="3" r="1" fill="currentColor"/><circle cx="269" cy="3" r="1.7" fill="currentColor"/><circle cx="279" cy="3" r="1.2" fill="currentColor"/><circle cx="289" cy="3" r="1" fill="currentColor"/><circle cx="299" cy="3" r="1.4" fill="currentColor"/><circle cx="309" cy="3" r="1.8" fill="currentColor"/><circle cx="319" cy="3" r="1" fill="currentColor"/><circle cx="329" cy="3" r="1.6" fill="currentColor"/><circle cx="339" cy="3" r="1.1" fill="currentColor"/><circle cx="349" cy="3" r="1.9" fill="currentColor"/><circle cx="359" cy="3" r="1" fill="currentColor"/><circle cx="369" cy="3" r="1.5" fill="currentColor"/><circle cx="378" cy="3" r="1.2" fill="currentColor"/></svg></div>
-
+<div class="dot-rule" aria-hidden="true"></div>
 <section class="result-sec" id="result-sec" aria-live="polite" aria-atomic="false" aria-label="Translation result">
 <div class="r-empty" id="r-empty"><p class="r-empty-txt">Enter your pet's age to see the result</p></div>
 <div class="r-content" id="r-content" aria-hidden="true">
@@ -134,7 +100,6 @@
 <p class="flavour" id="flavour" aria-label="Description"></p>
 </div>
 </section>
-
 <footer class="w-footer"><p>For fun only &mdash; no data is ever saved.</p></footer>
 </div></main>
 <script src="script.js"></script>

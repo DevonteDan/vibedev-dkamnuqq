@@ -1,466 +1,180 @@
-/**
- * Pet Age Translator — script.js
- * Client-side only, stateless (no localStorage/cookie/network)
- * All formulas and life-stage data stored as config objects (NFR-6)
- */
-
 'use strict';
-
-/* ── CONFIG DATA (separated from rendering logic per NFR-6) ── */
-
-/** @type {Record<string, {maxAge: number, toHuman: function(number): number}>} */
-const SPECIES_CONFIG = {
-  dog: {
-    maxAge: 25,
-    /**
-     * Dog formula (FR-3):
-     *   Year 1 = 15 human years
-     *   Year 2 = +9 (total 24)
-     *   Year 3+ = +5 per year
-     * Supports fractional interpolation.
-     */
-    toHuman(age) {
-      if (age <= 0) return 0;
-      if (age <= 1) return age * 15;
-      if (age <= 2) return 15 + (age - 1) * 9;
-      return 24 + (age - 2) * 5;
-    },
-  },
-  cat: {
-    maxAge: 25,
-    /**
-     * Cat formula (FR-3):
-     *   Year 1 = 15, Year 2 = +9 (total 24), Year 3+ = +4 per year
-     */
-    toHuman(age) {
-      if (age <= 0) return 0;
-      if (age <= 1) return age * 15;
-      if (age <= 2) return 15 + (age - 1) * 9;
-      return 24 + (age - 2) * 4;
-    },
-  },
-  rabbit: {
-    maxAge: 12,
-    /**
-     * Rabbit formula (FR-3):
-     *   Year 1 = 10, Year 2+ = +8 per year
-     */
-    toHuman(age) {
-      if (age <= 0) return 0;
-      if (age <= 1) return age * 10;
-      return 10 + (age - 1) * 8;
-    },
-  },
-  hamster: {
-    maxAge: 4,
-    /**
-     * Hamster formula (FR-3):
-     *   Year 1 = 20, Year 2+ = +18 per year
-     */
-    toHuman(age) {
-      if (age <= 0) return 0;
-      if (age <= 1) return age * 20;
-      return 20 + (age - 1) * 18;
-    },
-  },
-  parrot: {
-    maxAge: 80,
-    /**
-     * Parrot formula (FR-3):
-     *   Year 1 = 5, Year 2+ = +2.5 per year
-     */
-    toHuman(age) {
-      if (age <= 0) return 0;
-      if (age <= 1) return age * 5;
-      return 5 + (age - 1) * 2.5;
-    },
-  },
+const SPECIES={
+  dog:{max:25,fn(a){if(a<=0)return 0;if(a<=1)return a*15;if(a<=2)return 15+(a-1)*9;return 24+(a-2)*5}},
+  cat:{max:25,fn(a){if(a<=0)return 0;if(a<=1)return a*15;if(a<=2)return 15+(a-1)*9;return 24+(a-2)*4}},
+  rabbit:{max:12,fn(a){if(a<=0)return 0;if(a<=1)return a*10;return 10+(a-1)*8}},
+  hamster:{max:4,fn(a){if(a<=0)return 0;if(a<=1)return a*20;return 20+(a-1)*18}},
+  parrot:{max:80,fn(a){if(a<=0)return 0;if(a<=1)return a*5;return 5+(a-1)*2.5}},
 };
-
-/** @type {Array<{min: number, max: number, stage: string, group: 'young'|'mid'|'senior', phrase: string}>} */
-const LIFE_STAGES = [
-  { min: 0,  max: 2,  stage: 'Newborn',      group: 'young',  phrase: 'still figuring out the world!'    },
-  { min: 3,  max: 12, stage: 'Toddler',       group: 'young',  phrase: 'curious and full of energy!'      },
-  { min: 13, max: 19, stage: 'Teenager',      group: 'mid',    phrase: 'testing all the boundaries!'      },
-  { min: 20, max: 34, stage: 'Young Adult',   group: 'mid',    phrase: 'peak adulting!'                   },
-  { min: 35, max: 54, stage: 'Middle-Aged',   group: 'mid',    phrase: 'wise and settled!'                },
-  { min: 55, max: 74, stage: 'Senior',        group: 'senior', phrase: 'earned every gray hair!'          },
-  { min: 75, max: Infinity, stage: 'Elder',   group: 'senior', phrase: 'a true legend!'                   },
+const STAGES=[
+  {min:0, max:2, stage:'Newborn',    group:'young',phrase:'still figuring out the world!'},
+  {min:3, max:12,stage:'Toddler',    group:'young',phrase:'curious and full of energy!'},
+  {min:13,max:19,stage:'Teenager',   group:'mid',  phrase:'testing all the boundaries!'},
+  {min:20,max:34,stage:'Young Adult',group:'mid',  phrase:'peak adulting!'},
+  {min:35,max:54,stage:'Middle-Aged',group:'mid',  phrase:'wise and settled!'},
+  {min:55,max:74,stage:'Senior',     group:'senior',phrase:'earned every gray hair!'},
+  {min:75,max:Infinity,stage:'Elder',group:'senior',phrase:'a true legend!'},
 ];
-
-/** Color map for life-stage groups */
-const STAGE_COLORS = {
-  young:  'var(--stage-young)',
-  mid:    'var(--stage-mid)',
-  senior: 'var(--stage-senior)',
+const COLORS={young:'var(--young)',mid:'var(--mid)',sen:'var(--sen)'};
+const ICONS={
+  'Newborn':'<svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="2" fill="currentColor"/><line x1="10" y1="3" x2="10" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="10" y1="14" x2="10" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="10" x2="6" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+  'Toddler':'<svg viewBox="0 0 20 20" fill="none"><rect x="7" y="11" width="6" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="8" y="5" width="5" height="4.5" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>',
+  'Teenager':'<svg viewBox="0 0 20 20" fill="none"><path d="M3 12L7 7L11 12L15 7L18 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  'Young Adult':'<svg viewBox="0 0 20 20" fill="none"><path d="M5 15L13 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M8 6L14 6L14 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  'Middle-Aged':'<svg viewBox="0 0 20 20" fill="none"><line x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5"/></svg>',
+  'Senior':'<svg viewBox="0 0 20 20" fill="none"><path d="M3 13Q10 6 17 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M6 13Q10 9 14 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
+  'Elder':'<svg viewBox="0 0 20 20" fill="none"><path d="M10 4C7 6 4 9 5 12C6 15 10 16 10 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10 4C13 6 16 9 15 12C14 15 10 16 10 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>',
 };
 
-/**
- * Inline SVG icons for life stages (per Design.md §6)
- * Returns SVG string — displayed via innerHTML on trusted data (not user input)
- */
-const STAGE_ICONS = {
-  'Newborn': `<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="10" cy="10" r="2" fill="currentColor"/>
-    <line x1="10" y1="3" x2="10" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="10" y1="14" x2="10" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <line x1="3" y1="10" x2="6" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-  </svg>`,
-  'Toddler': `<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="7" y="11" width="6" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
-    <rect x="8" y="5" width="5" height="4.5" rx="1" stroke="currentColor" stroke-width="1.5"/>
-  </svg>`,
-  'Teenager': `<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M3 12 L7 7 L11 12 L15 7 L18 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>`,
-  'Young Adult': `<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M5 15 L13 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <path d="M8 6 L14 6 L14 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>`,
-  'Middle-Aged': `<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <line x1="4" y1="10" x2="16" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5"/>
-  </svg>`,
-  'Senior': `<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M3 13 Q10 6 17 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <path d="M6 13 Q10 9 14 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-  </svg>`,
-  'Elder': `<svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M10 4 C7 6 4 9 5 12 C6 15 10 16 10 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <path d="M10 4 C13 6 16 9 15 12 C14 15 10 16 10 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-  </svg>`,
-};
+const $=id=>document.getElementById(id);
+const ageInp=$('age-input'),rEmpty=$('r-empty'),rContent=$('r-content'),
+      rNum=$('r-num'),rSweep=$('r-sweep'),badge=$('badge'),
+      badgeIcon=$('badge-icon'),badgeTxt=$('badge-txt'),flavour=$('flavour'),
+      btnDec=$('btn-dec'),btnInc=$('btn-inc');
 
-/* ── STATE ── */
-const state = {
-  species: 'dog',
-  age: null,  // null = empty, number = valid age
-};
+let state={sp:'dog',age:null};
+let rafId=null,displayed=0,prevStage=null,firstReveal=true;
 
-/* ── DOM ELEMENTS ── */
-const ageInput     = /** @type {HTMLInputElement} */ (document.getElementById('age-input'));
-const resultEmpty  = document.getElementById('result-empty');
-const resultContent = document.getElementById('result-content');
-const resultNumber = document.getElementById('result-number');
-const resultUnderline = document.getElementById('result-underline');
-const stageBadge   = document.getElementById('stage-badge');
-const badgeIcon    = document.getElementById('badge-icon');
-const badgeText    = document.getElementById('badge-text');
-const flavourText  = document.getElementById('flavour-text');
-const btnDecrease  = document.getElementById('btn-decrease');
-const btnIncrease  = document.getElementById('btn-increase');
-
-/* ── COUNT-UP ANIMATION STATE ── */
-let countUpRaf = null;
-let currentDisplayedValue = 0;
-
-/**
- * Eased count-up animation for the hero number.
- * Calculation is instant; only the visual display is animated.
- * @param {number} targetValue - The final integer value to display
- */
-function animateCountUp(targetValue) {
-  if (countUpRaf) {
-    cancelAnimationFrame(countUpRaf);
-    countUpRaf = null;
-  }
-
-  const startValue = currentDisplayedValue;
-  const diff = targetValue - startValue;
-  const duration = Math.min(600, Math.max(200, Math.abs(diff) * 15)); // 200–600ms
-  const startTime = performance.now();
-
-  function step(now) {
-    const elapsed = now - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-    // Ease-out cubic
-    const eased = 1 - Math.pow(1 - progress, 3);
-    const current = Math.round(startValue + diff * eased);
-    resultNumber.textContent = current;
-    currentDisplayedValue = current;
-
-    if (progress < 1) {
-      countUpRaf = requestAnimationFrame(step);
-    } else {
-      resultNumber.textContent = targetValue;
-      currentDisplayedValue = targetValue;
-      countUpRaf = null;
-      // Micro-underline sweep
-      triggerSweepUnderline();
-    }
-  }
-
-  countUpRaf = requestAnimationFrame(step);
+function getStage(h){
+  for(const s of STAGES)if(h>=s.min&&h<=s.max)return s;
+  return STAGES[STAGES.length-1];
 }
 
-/** Trigger the accent micro-underline sweep below the hero number */
-function triggerSweepUnderline() {
-  resultUnderline.classList.remove('is-sweeping');
-  // Force reflow to restart animation
-  void resultUnderline.offsetWidth;
-  resultUnderline.classList.add('is-sweeping');
+function countUp(target){
+  if(rafId){cancelAnimationFrame(rafId);rafId=null}
+  const start=displayed,diff=target-start;
+  const dur=Math.min(600,Math.max(200,Math.abs(diff)*15));
+  const t0=performance.now();
+  function step(now){
+    const p=Math.min((now-t0)/dur,1);
+    const e=1-Math.pow(1-p,3);
+    const v=Math.round(start+diff*e);
+    rNum.textContent=v;displayed=v;
+    if(p<1){rafId=requestAnimationFrame(step)}
+    else{rNum.textContent=target;displayed=target;rafId=null;sweep()}
+  }
+  rafId=requestAnimationFrame(step);
 }
 
-/**
- * Get life-stage config for a given human age.
- * @param {number} humanAge
- */
-function getLifeStage(humanAge) {
-  for (const stage of LIFE_STAGES) {
-    if (humanAge >= stage.min && humanAge <= stage.max) return stage;
-  }
-  return LIFE_STAGES[LIFE_STAGES.length - 1]; // fallback: Elder
+function sweep(){
+  rSweep.classList.remove('sweeping');
+  void rSweep.offsetWidth;
+  rSweep.classList.add('sweeping');
 }
 
-/**
- * Build grammatically correct flavour sentence (FR-6).
- * Avoids "1-years-old" etc.
- * @param {number} petAge
- * @param {string} species
- * @param {number} humanAge
- * @param {string} stagePhrase
- */
-function buildFlavourText(petAge, species, humanAge, stagePhrase) {
-  // Sanitize: use only numeric values, textContent-safe strings
-  const ageStr = Number.isInteger(petAge) ? String(petAge) : petAge.toFixed(1);
-  const yearWord = petAge === 1 ? 'year' : 'years';
-  const humanAgeStr = String(humanAge);
-  const speciesName = String(species); // already constrained to known keys
-  const speciesCapitalized = speciesName.charAt(0).toUpperCase() + speciesName.slice(1);
+function render(){
+  const{sp,age}=state;
+  if(age===null){
+    rEmpty.style.display='';
+    rContent.setAttribute('aria-hidden','true');
+    rContent.style.display='none';
+    firstReveal=true;displayed=0;return;
+  }
+  const cfg=SPECIES[sp];
+  const hf=cfg.fn(Number(age));
+  const h=Math.round(hf);
+  const ls=getStage(h);
 
-  return `Your ${ageStr}-${yearWord}-old ${speciesCapitalized} is basically a ${humanAgeStr}-year-old human\u00A0\u2014\u00A0${stagePhrase}`;
-}
+  rEmpty.style.display='none';
+  rContent.style.display='flex';
+  rContent.removeAttribute('aria-hidden');
 
-/* ── RENDER ── */
-let isFirstReveal = true;
-let previousStage = null;
-
-/**
- * Main render function — called whenever state changes.
- * Calculation is synchronous/instant; only animations take time.
- */
-function render() {
-  const { species, age } = state;
-
-  // ── Empty state ──
-  if (age === null || age === '') {
-    resultEmpty.style.display = '';
-    resultContent.setAttribute('aria-hidden', 'true');
-    resultContent.style.display = 'none';
-    isFirstReveal = true;
-    currentDisplayedValue = 0;
-    return;
+  if(firstReveal){
+    firstReveal=false;
+    rContent.classList.remove('revealing');
+    void rContent.offsetWidth;
+    rContent.classList.add('revealing');
+    setTimeout(()=>rContent.classList.remove('revealing'),600);
   }
 
-  // ── Calculate (instant) ──
-  const config = SPECIES_CONFIG[species];
-  const humanAgeFloat = config.toHuman(Number(age));
-  const humanAge = Math.round(humanAgeFloat);
-  const lifeStage = getLifeStage(humanAge);
+  countUp(h);
 
-  // ── Show result area ──
-  resultEmpty.style.display = 'none';
-  resultContent.style.display = 'flex';
-  resultContent.removeAttribute('aria-hidden');
+  const colKey={young:'young',mid:'mid',senior:'sen'}[ls.group];
+  badge.style.background=COLORS[colKey];
+  badgeTxt.textContent=ls.stage;
+  badgeIcon.innerHTML=ICONS[ls.stage]||'';
 
-  // Staggered reveal on first show
-  if (isFirstReveal) {
-    isFirstReveal = false;
-    resultContent.classList.remove('is-revealing');
-    void resultContent.offsetWidth;
-    resultContent.classList.add('is-revealing');
-    // Remove class after animations complete
-    setTimeout(() => resultContent.classList.remove('is-revealing'), 600);
-  }
-
-  // ── Animate hero number ──
-  animateCountUp(humanAge);
-
-  // ── Update badge ──
-  const stageChanged = lifeStage.stage !== previousStage;
-  previousStage = lifeStage.stage;
-
-  stageBadge.style.background = STAGE_COLORS[lifeStage.group];
-
-  // Set badge text (textContent only — no injection risk)
-  badgeText.textContent = lifeStage.stage;
-
-  // Set badge icon (trusted SVG from static config, not user input)
-  badgeIcon.innerHTML = STAGE_ICONS[lifeStage.stage] || '';
-
-  if (stageChanged) {
-    badgeIcon.classList.remove('is-rotating');
+  if(ls.stage!==prevStage){
+    prevStage=ls.stage;
+    badgeIcon.classList.remove('rotating');
     void badgeIcon.offsetWidth;
-    badgeIcon.classList.add('is-rotating');
+    badgeIcon.classList.add('rotating');
   }
 
-  // ── Update flavour text ──
-  const petAge = Number(age);
-  // textContent prevents XSS — safe for sanitized input
-  flavourText.textContent = buildFlavourText(petAge, species, humanAge, lifeStage.phrase);
+  const a=Number(age);
+  const yw=a===1?'year':'years';
+  const sc=sp.charAt(0).toUpperCase()+sp.slice(1);
+  const ageStr=Number.isInteger(a)?String(a):a.toFixed(1);
+  // textContent only — no XSS risk
+  flavour.textContent=`Your ${ageStr}-${yw}-old ${sc} is basically a ${h}-year-old human\u00A0\u2014\u00A0${ls.phrase}`;
 }
 
-/* ── SPECIES SELECTION ── */
+function clampAge(val,sp){
+  if(val===null)return null;
+  let v=parseFloat(val);
+  if(isNaN(v))return null;
+  if(v<0)v=0;
+  const mx=SPECIES[sp].max;
+  if(v>mx)v=mx;
+  return v;
+}
 
-/**
- * Select a species — updates state, aria-pressed, and visual indicator.
- * @param {string} newSpecies
- */
-function selectSpecies(newSpecies) {
-  if (newSpecies === state.species) return; // no-op if same (FR edge case)
-
-  // Update previous selection
-  const prevBtn = document.getElementById(`btn-${state.species}`);
-  if (prevBtn) {
-    prevBtn.setAttribute('aria-pressed', 'false');
-    prevBtn.closest('.species-item').classList.remove('is-selected');
+function selectSp(sp){
+  if(sp===state.sp)return;
+  const prev=$('btn-'+state.sp);
+  if(prev){prev.setAttribute('aria-pressed','false');prev.closest('.sp-item').classList.remove('sel')}
+  state.sp=sp;
+  const nb=$('btn-'+sp);
+  if(nb){nb.setAttribute('aria-pressed','true');nb.closest('.sp-item').classList.add('sel')}
+  const cfg=SPECIES[sp];
+  ageInp.setAttribute('max',String(cfg.max));
+  if(state.age!==null&&state.age>cfg.max){
+    state.age=cfg.max;ageInp.value=String(cfg.max);
   }
-
-  state.species = newSpecies;
-
-  // Update new selection
-  const newBtn = document.getElementById(`btn-${newSpecies}`);
-  if (newBtn) {
-    newBtn.setAttribute('aria-pressed', 'true');
-    newBtn.closest('.species-item').classList.add('is-selected');
-  }
-
-  // Clamp age to new species max (FR edge case: switch species when age > new max)
-  const config = SPECIES_CONFIG[newSpecies];
-  if (state.age !== null && state.age > config.maxAge) {
-    state.age = config.maxAge;
-    ageInput.value = String(config.maxAge);
-  }
-
-  // Update max attribute
-  ageInput.setAttribute('max', String(config.maxAge));
-
   render();
 }
 
-/** Animate button tap (scale bounce) */
-function animateButtonTap(btn) {
-  btn.classList.remove('is-pressing', 'is-bouncing');
+function tapAnim(btn){
+  btn.classList.remove('pressing','bouncing');
   void btn.offsetWidth;
-  btn.classList.add('is-pressing');
-  requestAnimationFrame(() => {
-    setTimeout(() => {
-      btn.classList.remove('is-pressing');
-      btn.classList.add('is-bouncing');
-      setTimeout(() => {
-        btn.classList.remove('is-bouncing');
-      }, 150);
-    }, 80);
+  btn.classList.add('pressing');
+  requestAnimationFrame(()=>{
+    setTimeout(()=>{btn.classList.remove('pressing');btn.classList.add('bouncing');
+      setTimeout(()=>btn.classList.remove('bouncing'),150);
+    },80);
   });
 }
 
-// Attach species button listeners
-document.querySelectorAll('.species-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const newSpecies = btn.getAttribute('data-species');
-    animateButtonTap(btn);
-    selectSpecies(newSpecies);
-  });
-
-  // Keyboard: Enter/Space already handled natively by button role
+document.querySelectorAll('.sp-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{tapAnim(btn);selectSp(btn.dataset.sp)});
 });
 
-// Set initial selected state visually
-document.getElementById('btn-dog').closest('.species-item').classList.add('is-selected');
-
-/* ── AGE INPUT HANDLING ── */
-
-/**
- * Parse and validate age input.
- * Returns clamped number or null for empty.
- * @param {string} raw
- * @param {string} species
- * @returns {number|null}
- */
-function parseAge(raw, species) {
-  if (raw === '' || raw === null) return null;
-
-  let val = parseFloat(raw);
-
-  // Non-numeric or NaN
-  if (isNaN(val)) return null;
-
-  // Clamp negative to 0
-  if (val < 0) val = 0;
-
-  // Clamp to species max
-  const max = SPECIES_CONFIG[species].maxAge;
-  if (val > max) val = max;
-
-  return val;
-}
-
-ageInput.addEventListener('input', () => {
-  const parsed = parseAge(ageInput.value, state.species);
-  state.age = parsed;
-
-  // If we clamped, update input visually
-  if (parsed !== null && parsed !== parseFloat(ageInput.value)) {
-    ageInput.value = String(parsed);
-  }
-
+ageInp.addEventListener('input',()=>{
+  const v=clampAge(ageInp.value,state.sp);
+  state.age=v;
+  if(v!==null&&v!==parseFloat(ageInp.value))ageInp.value=String(v);
   render();
 });
-
-// Handle blur: if negative typed and not caught by input event (some browsers)
-ageInput.addEventListener('blur', () => {
-  if (ageInput.value !== '' && parseFloat(ageInput.value) < 0) {
-    ageInput.value = '0';
-    state.age = 0;
-    render();
-  }
+ageInp.addEventListener('blur',()=>{
+  if(ageInp.value!==''&&parseFloat(ageInp.value)<0){ageInp.value='0';state.age=0;render()}
 });
 
-/* ── STEPPERS ── */
-
-function stepAge(direction) {
-  const current = state.age === null ? 0 : Number(state.age);
-  const config = SPECIES_CONFIG[state.species];
-  let next = current + direction;
-
-  // Clamp
-  if (next < 0) next = 0;
-  if (next > config.maxAge) next = config.maxAge;
-
-  // Round to 1 decimal for display
-  next = Math.round(next * 10) / 10;
-
-  state.age = next;
-  ageInput.value = Number.isInteger(next) ? String(next) : next.toFixed(1);
+function step(d){
+  const cur=state.age===null?0:Number(state.age);
+  const cfg=SPECIES[state.sp];
+  let n=Math.round((cur+d)*10)/10;
+  if(n<0)n=0;if(n>cfg.max)n=cfg.max;
+  state.age=n;
+  ageInp.value=Number.isInteger(n)?String(n):n.toFixed(1);
   render();
 }
+btnDec.addEventListener('click',()=>step(-1));
+btnInc.addEventListener('click',()=>step(1));
+btnDec.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();step(-1)}});
+btnInc.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();step(1)}});
+ageInp.addEventListener('keydown',e=>{if(e.key==='ArrowUp'){e.preventDefault();step(1)}if(e.key==='ArrowDown'){e.preventDefault();step(-1)}});
 
-btnDecrease.addEventListener('click', () => stepAge(-1));
-btnIncrease.addEventListener('click', () => stepAge(1));
-
-// Keyboard support for steppers
-btnDecrease.addEventListener('keydown', e => {
-  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); stepAge(-1); }
-});
-btnIncrease.addEventListener('keydown', e => {
-  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); stepAge(1); }
-});
-
-/* ── KEYBOARD: Arrow keys on age input ── */
-ageInput.addEventListener('keydown', e => {
-  if (e.key === 'ArrowUp')   { e.preventDefault(); stepAge(1);  }
-  if (e.key === 'ArrowDown') { e.preventDefault(); stepAge(-1); }
-});
-
-/* ── INIT ── */
-(function init() {
-  // Set Dog as selected by default (FR-1)
-  const dogConfig = SPECIES_CONFIG['dog'];
-  ageInput.setAttribute('max', String(dogConfig.maxAge));
-  ageInput.setAttribute('min', '0');
-  ageInput.setAttribute('step', '1');
-
-  // Empty state on load (FR-5: no default value shown, show friendly prompt)
-  state.age = null;
-  render();
-})();
+// Init
+$('btn-dog').closest('.sp-item').classList.add('sel');
+ageInp.setAttribute('max','25');ageInp.setAttribute('min','0');ageInp.setAttribute('step','1');
+render();

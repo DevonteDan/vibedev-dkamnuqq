@@ -16,64 +16,94 @@
 <div class="species-row" role="group" aria-label="Select species">
 
 <div class="sp-item"><button class="sp-btn" data-sp="dog" aria-label="Select Dog" aria-pressed="true" id="btn-dog">
-<svg class="sp-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-<ellipse cx="20" cy="25" rx="11" ry="10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-<path d="M9 21C6 17 5.5 11 8 8C10 5.5 13 6.5 13 11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M31 21C34 17 34.5 11 32 8C30 5.5 27 6.5 27 11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-<circle cx="16" cy="23" r="1.5" fill="currentColor"/>
-<circle cx="24" cy="23" r="1.5" fill="currentColor"/>
-<ellipse cx="20" cy="29" rx="3" ry="2" stroke="currentColor" stroke-width="1.4"/>
-<path d="M17 29Q20 32 23 29" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+<svg class="sp-icon" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+<!-- Head -->
+<ellipse cx="22" cy="27" rx="12" ry="11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+<!-- Left floppy ear (hanging down alongside head) -->
+<path d="M10 22 C6 18 5 10 8 6 C10 3 14 4 14 9 C14 14 12 19 10 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- Right floppy ear -->
+<path d="M34 22 C38 18 39 10 36 6 C34 3 30 4 30 9 C30 14 32 19 34 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- Eyes -->
+<circle cx="17.5" cy="25" r="1.8" fill="currentColor"/>
+<circle cx="26.5" cy="25" r="1.8" fill="currentColor"/>
+<!-- Nose/snout area -->
+<ellipse cx="22" cy="32" rx="4" ry="2.5" stroke="currentColor" stroke-width="1.6"/>
+<!-- Mouth -->
+<path d="M19 32 Q22 35.5 25 32" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
 </svg></button>
 <span class="sp-name" aria-hidden="true">Dog</span><div class="sp-line" aria-hidden="true"></div></div>
 
 <div class="sp-item"><button class="sp-btn" data-sp="cat" aria-label="Select Cat" aria-pressed="false" id="btn-cat">
-<svg class="sp-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-<path d="M9 29C9 22 11 14 20 13C29 14 31 22 31 29C31 33 26 36 20 36C14 36 9 33 9 29Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M10 23L7 11L16 18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M30 23L33 11L24 18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M15.5 25.5C15.5 27.5 17.5 28 20 28C22.5 28 24.5 27.5 24.5 25.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-<circle cx="20" cy="31" r="1.2" fill="currentColor"/>
-<line x1="4" y1="28" x2="14" y2="28.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-<line x1="4" y1="31" x2="14" y2="30.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-<line x1="36" y1="28" x2="26" y2="28.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-<line x1="36" y1="31" x2="26" y2="30.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+<svg class="sp-icon" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+<!-- Head (slightly angular/triangular) -->
+<path d="M10 32 C10 24 12 17 22 15 C32 17 34 24 34 32 C34 37 28.5 40 22 40 C15.5 40 10 37 10 32Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- Left pointed ear -->
+<path d="M11 26 L7 12 L18 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- Right pointed ear -->
+<path d="M33 26 L37 12 L26 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- Eyes (almond shape) -->
+<ellipse cx="17" cy="28" rx="2" ry="1.5" fill="currentColor"/>
+<ellipse cx="27" cy="28" rx="2" ry="1.5" fill="currentColor"/>
+<!-- Nose -->
+<circle cx="22" cy="33" r="1.3" fill="currentColor"/>
+<!-- Whiskers left -->
+<line x1="4" y1="31" x2="16" y2="32" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+<line x1="4" y1="34.5" x2="16" y2="33.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+<!-- Whiskers right -->
+<line x1="40" y1="31" x2="28" y2="32" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+<line x1="40" y1="34.5" x2="28" y2="33.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
 </svg></button>
 <span class="sp-name" aria-hidden="true">Cat</span><div class="sp-line" aria-hidden="true"></div></div>
 
 <div class="sp-item"><button class="sp-btn" data-sp="rabbit" aria-label="Select Rabbit" aria-pressed="false" id="btn-rabbit">
-<svg class="sp-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-<ellipse cx="20" cy="28" rx="10" ry="9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-<path d="M14 22C12.5 17 12.5 8 15.5 4C16.5 2 18.5 2.5 18.5 5C18.5 9 17 17 16 22" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M26 22C27.5 17 27.5 8 24.5 4C23.5 2 21.5 2.5 21.5 5C21.5 9 23 17 24 22" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-<circle cx="16" cy="26.5" r="1.4" fill="currentColor"/>
-<circle cx="24" cy="26.5" r="1.4" fill="currentColor"/>
-<ellipse cx="20" cy="31" r="1.8" fill="currentColor"/>
-<path d="M18 31Q20 33.5 22 31" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+<svg class="sp-icon" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+<!-- Head (round) -->
+<ellipse cx="22" cy="30" rx="11" ry="10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+<!-- Left tall ear -->
+<path d="M15 23 C13 17 13 7 16 3 C17 1.5 19.5 2 19.5 4.5 C19.5 9 18 18 17 23" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- Right tall ear -->
+<path d="M29 23 C31 17 31 7 28 3 C27 1.5 24.5 2 24.5 4.5 C24.5 9 26 18 27 23" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- Eyes -->
+<circle cx="17.5" cy="28" r="1.8" fill="currentColor"/>
+<circle cx="26.5" cy="28" r="1.8" fill="currentColor"/>
+<!-- Nose (bunny round nose) -->
+<circle cx="22" cy="33" r="2" fill="currentColor"/>
+<!-- Mouth -->
+<path d="M19.5 33 Q22 36.5 24.5 33" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
 </svg></button>
 <span class="sp-name" aria-hidden="true">Rabbit</span><div class="sp-line" aria-hidden="true"></div></div>
 
 <div class="sp-item"><button class="sp-btn" data-sp="hamster" aria-label="Select Hamster" aria-pressed="false" id="btn-hamster">
-<svg class="sp-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-<circle cx="20" cy="22" r="13" stroke="currentColor" stroke-width="1.7"/>
-<path d="M7 22C4.5 18 5 12 8 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-<path d="M33 22C35.5 18 35 12 32 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-<path d="M14 10C13 7.5 14.5 6 16.5 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-<path d="M26 10C27 7.5 25.5 6 23.5 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-<circle cx="15.5" cy="20" r="2" fill="currentColor"/>
-<circle cx="24.5" cy="20" r="2" fill="currentColor"/>
-<circle cx="20" cy="25" r="1.4" fill="currentColor"/>
-<path d="M17.5 25Q20 28 22.5 25" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+<svg class="sp-icon" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+<!-- Very round head -->
+<circle cx="22" cy="24" r="14" stroke="currentColor" stroke-width="2"/>
+<!-- Puffy cheeks bulging out -->
+<path d="M8 24 C5 20 5.5 13 9 11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+<path d="M36 24 C39 20 38.5 13 35 11" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+<!-- Tiny round ears (barely peeking) -->
+<path d="M15 11 C14 8 16 7 18 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+<path d="M29 11 C30 8 28 7 26 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+<!-- Big eyes (hamster characteristic) -->
+<circle cx="16" cy="21" r="2.5" fill="currentColor"/>
+<circle cx="28" cy="21" r="2.5" fill="currentColor"/>
+<!-- Tiny nose -->
+<circle cx="22" cy="27" r="1.5" fill="currentColor"/>
+<!-- Mouth -->
+<path d="M19.5 27 Q22 30.5 24.5 27" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
 </svg></button>
 <span class="sp-name" aria-hidden="true">Hamster</span><div class="sp-line" aria-hidden="true"></div></div>
 
 <div class="sp-item"><button class="sp-btn" data-sp="parrot" aria-label="Select Parrot" aria-pressed="false" id="btn-parrot">
-<svg class="sp-icon" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-<path d="M11 27C11 18 13 10 20 9C27 8 31 15 31 23C31 30 27 35 20 35C13 35 11 31 11 27Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-<path d="M17 9.5C15 6 16 3 19 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-<path d="M20 9C19.5 6 20.5 3.5 23 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-<circle cx="24" cy="21" r="3" stroke="currentColor" stroke-width="1.5"/>
-<circle cx="24" cy="21" r="1.2" fill="currentColor"/>
+<svg class="sp-icon" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+<!-- Round head -->
+<circle cx="22" cy="26" r="13" stroke="currentColor" stroke-width="2"/>
+<!-- Crest feathers on top -->
+<path d="M17 14 C15 9 16 5 19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+<path d="M21 13 C20 8 21.5 5 24 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+<path d="M25 15 C25 10 27 7 29 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+<!-- Large distinctive eye with ring -->
+<circle cx="27" cy="23" r="4" stroke="currentColor" stroke-width="1.8"/>
+<circle cx="27" cy="23" r="1.8" fill="currentColor"/>
 <path d="M17 27C15 25 14.5 22 16 21C17.5 20 19 21.5 18.5 24" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M18.5 24C18.5 27 17 28.5 17 27" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
 </svg></button>

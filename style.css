@@ -38,7 +38,7 @@ body{
 .species-row{display:flex;justify-content:space-between;gap:8px;margin-bottom:20px}
 .sp-item{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;position:relative}
 .sp-btn{
-  width:56px;height:56px;border-radius:50%;border:1.5px solid var(--ink);background:transparent;
+  width:60px;height:60px;border-radius:50%;border:2px solid var(--ink);background:transparent;
   cursor:pointer;display:flex;align-items:center;justify-content:center;
   color:var(--soft);transition:background 200ms var(--eob),color 200ms var(--eob),border-color 200ms var(--eob),transform 250ms var(--ebounce);
   -webkit-tap-highlight-color:transparent;min-width:44px;min-height:44px;
@@ -49,7 +49,7 @@ body{
 .sp-btn[aria-pressed="true"]:hover{background:var(--acc2);border-color:var(--acc2)}
 .sp-btn.pressing{transform:scale(.96)}
 .sp-btn.bouncing{transform:scale(1.04)}
-.sp-icon{width:26px;height:26px;display:block}
+.sp-icon{width:30px;height:30px;display:block}
 .sp-name{
   font-size:.7rem;font-weight:500;color:var(--acc);letter-spacing:.05em;
   opacity:0;transform:translateY(4px);
